@@ -9,7 +9,7 @@ class Account(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
     )
-    number = models.CharField('Номер счёта', max_length=255)
+    number = models.CharField('Номер счёта', max_length=255, unique=True)
     TYPES = (
         ('a', 'Депозитный'),
         ('b', 'Кредитный'),

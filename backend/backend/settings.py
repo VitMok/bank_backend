@@ -20,15 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gg676=i@s8&8z0w#d0+=ik$1@tglemv#h5^2*ngp83l71d&a^g'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get("DEBUG", "0")))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
-# Application definition
+# ___   ___  ___  ____
+# / _ | / _ \/ _ \/ __/
+# / __ |/ ___/ ___/\ \`
+# /_/ |_/_/  /_/  /___/
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,6 +53,11 @@ INSTALLED_APPS = [
     'apps.users',
 ]
 
+# __  __________  ___  __   _____      _____   ___  ____
+# /  |/  /  _/ _ \/ _ \/ /  / __/ | /| / / _ | / _ \/ __/
+# / /|_/ // // // / // / /__/ _/ | |/ |/ / __ |/ , _/ _/
+# /_/  /_/___/____/____/____/___/ |__/|__/_/ |_/_/|_/___/
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,6 +72,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
+
+# ____________  ______  __   ___ ______________
+# /_  __/ __/  |/  / _ \/ /  / _ /_  __/ __/ __/
+# / / / _// /|_/ / ___/ /__/ __ |/ / / _/_\ \
+# /_/ /___/_/  /_/_/  /____/_/ |_/_/ /___/___/
 
 TEMPLATES = [
     {
@@ -84,23 +97,30 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+# ___  ___
+# / _ \/ _ )
+# / // / _  |
+# /____/____/
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Bank',
-        'USER': 'postgres',
-        'PASSWORD': 'Vitaskarate18',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
 
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+
+#   ___  ___   ________  _   _____   __   _______  ___ ______________  _  __
+#  / _ \/ _ | / __/ __/ | | / / _ | / /  /  _/ _ \/ _ /_  __/  _/ __ \/ |/ /
+# / ___/ __ |_\ \_\ \   | |/ / __ |/ /___/ // // / __ |/ / _/ // /_/ /    /
+# /_/  /_/ |_/___/___/   |___/_/ |_/____/___/____/_/ |_/_/ /___/\____/_/|_/
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -121,29 +141,32 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
+# __   ____  ________   __   ____
+# / /  / __ \/ ___/ _ | / /  / __/
+# / /__/ /_/ / /__/ __ |/ /__/ _/
+# /____/\____/\___/_/ |_/____/___/
+
 LANGUAGE_CODE = 'ru'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = os.getenv('TIME_ZONE', 'Europe/Moscow')
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
-
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+# ___  ______________
+# / _ \/ __/ __/_  __/
+# / , _/ _/_\ \  / /
+# /_/|_/___/___/ /_/
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -152,4 +175,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
 }

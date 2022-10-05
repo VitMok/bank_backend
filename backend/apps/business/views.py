@@ -89,7 +89,9 @@ class BankAccountsAdminView(viewsets.ModelViewSet):
     """ Просмотр и редактирование банковских
     счетов персоналом """
     permission_classes = [IsAdminUser]
-    queryset = Account.objects.all()
+
+    def get_queryset(self):
+        return Account.objects.select_related('user').all()
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -107,7 +109,7 @@ class ReplenishmentCreateView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
     def get_queryset(self):
-        return get_list_or_404(Account.objects.select_related('user').all())
+        return Account.objects.select_related('user').all()
 
     @transaction.atomic
     def perform_create(self, serializer):
