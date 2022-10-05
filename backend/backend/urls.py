@@ -23,6 +23,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
-    path('api/v1/users/', include('apps.users.urls')),
-    path('api/v1/', include('apps.business.urls')),
+    path('api/users/', include('apps.users.urls')),
+    path('api/', include('apps.business.urls')),
 ]
